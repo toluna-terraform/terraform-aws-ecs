@@ -44,3 +44,9 @@ variable "vpc_id" {
   description = "VPC id"
   type        = string
 }
+
+variable "ecs_security_group_additional_rules" {
+  description = "List of additional security group rules to add to the security group created"
+  type        = any
+  default     = {}
+}

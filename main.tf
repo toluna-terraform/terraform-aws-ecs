@@ -122,34 +122,27 @@ resource "aws_security_group" "ecs_sg" {
   name   = "${var.environment}-${var.app_name}-ecs"
   vpc_id = var.vpc_id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] // We are protected by the VPC here so it is fine
-  }
-
-  ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    self      = true
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    prefix_list_ids = ["${data.aws_prefix_list.private_s3.id}"]
-  }
   tags = {
     Name = "sg-${var.environment}-${var.app_name}-ecs"
   }
+}
+
+resource "aws_security_group_rule" "ecs_sg" {
+  for_each = { for k, v in merge(local.ecs_security_group_rules, var.ecs_security_group_additional_rules) : k => v }
+
+  # Required
+  security_group_id = aws_security_group.ecs_sg.id
+  protocol          = each.value.protocol
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+  type              = each.value.type
+
+  # Optional
+  description              = try(each.value.description, null)
+  cidr_blocks              = try(each.value.cidr_blocks, null)
+  ipv6_cidr_blocks         = try(each.value.ipv6_cidr_blocks, null)
+  prefix_list_ids          = try(each.value.prefix_list_ids, [])
+  self                     = try(each.value.self, null)
+  source_security_group_id = try(each.value.source_security_group_id, null)
+
 }
