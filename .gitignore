@@ -1,0 +1,11 @@
+.DS_Store
+
+/logs
+/codegen
+
+/**/*.tfvars
+.terraform.lock.hcl
+.terraform/
+service/testresults/
+/**/environment.json
+terraform.tfstate*

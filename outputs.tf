@@ -13,3 +13,7 @@ output "ecs_task_execution_role_arn" {
 output "security_group_ecs_id" {
   value = aws_security_group.ecs_sg.id
 }
+
+output "ecs_task_definition_arn" {
+  value = aws_ecs_task_definition.task_definition.arn
+}

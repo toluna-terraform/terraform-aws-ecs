@@ -9,19 +9,27 @@ resource "aws_ecs_service" "main" {
   launch_type         = "FARGATE"
   scheduling_strategy = "REPLICA"
   desired_count       = var.ecs_service_desired_count
-  deployment_controller {
-    type = "CODE_DEPLOY"
+
+  dynamic "deployment_controller" {
+    for_each = var.aws_alb_target_group_arn == null ? [] : [true]
+    content {
+      type = "CODE_DEPLOY"
+    }
   }
+
   network_configuration {
-    security_groups  = var.security_group_ids
+    security_groups  = [aws_security_group.ecs_sg.id]
     subnets          = var.subnet_ids
     assign_public_ip = false
   }
 
-  load_balancer {
-    target_group_arn = var.aws_alb_target_group_arn
-    container_name   = "${var.app_name}-${var.environment}"
-    container_port   = 80
+  dynamic "load_balancer" {
+    for_each = var.aws_alb_target_group_arn == null ? [] : [true]
+    content {
+      target_group_arn = var.aws_alb_target_group_arn
+      container_name   = "${var.app_name}-${var.environment}"
+      container_port   = 80
+    }
   }
 
   # Ignoring changes made by code_deploy controller
@@ -45,7 +53,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       "memory" : 2048,
       "name" : "${var.app_name}-${var.environment}",
       "cpu" : 2,
-      "taskRoleArn" : aws_iam_role.ecs_task_execution_role,
+      "taskRoleArn" : "${aws_iam_role.ecs_task_execution_role.arn}",
       "image" : "${var.ecr_repo_url}:${split("-", var.environment)[0]}",
       "environment" : [
         { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${split("-", var.environment)[0]}" }
@@ -66,7 +74,7 @@ resource "aws_ecs_task_definition" "task_definition" {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-group" : "${var.aws_cloudwatch_log_group_name}",
-          "awslogs-region" : "${data.aws_region.current.name}", // TODO: parametrized
+          "awslogs-region" : "${data.aws_region.current.name}",
           "awslogs-stream-prefix" : "awslogs-${var.app_name}-pref"
         }
       }
