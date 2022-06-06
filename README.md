@@ -17,5 +17,8 @@ module "ecs" {
   aws_cloudwatch_log_group_name = local.aws_cloudwatch_log_group
   subnet_ids                    = local.subnet_ids
   aws_alb_target_group_arn      = local.aws_alb_target_group_arn
+  create_datadog                = true (default is false)
+  datadog_environment_variables = [{ "name" : "ECS_FARGATE", "value" : "true" },]
+  dd_api-key                    = "infra/dd_api_key"(this is not actual value)
 }
 ```
