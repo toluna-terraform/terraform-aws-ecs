@@ -47,42 +47,10 @@ resource "aws_ecs_task_definition" "task_definition" {
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  container_definitions = jsonencode([
-    {
-      "essential" : true,
-      "memory" : 2048,
-      "name" : "${var.app_name}-${var.environment}",
-      "cpu" : 2,
-      "taskRoleArn" : "${aws_iam_role.ecs_task_execution_role.arn}",
-      "image" : "${var.ecr_repo_url}:${split("-", var.environment)[0]}",
-      "environment" : [
-        { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${split("-", var.environment)[0]}" }
-      ],
-      "secrets" : [
-        {
-          "name" : "DB_HOST",
-          "valueFrom" : "/infra/${var.app_name}-${var.environment}/db-host"
-        }
-      ],
-      "portMappings" : [
-        {
-          "containerPort" : 80,
-          "hostPort" : 80
-        }
-      ],
-      "logConfiguration" : {
-        "logDriver" : "awslogs",
-        "options" : {
-          "awslogs-group" : "${var.aws_cloudwatch_log_group_name}",
-          "awslogs-region" : "${data.aws_region.current.name}",
-          "awslogs-stream-prefix" : "awslogs-${var.app_name}-pref"
-        }
-      }
-    }
-  ])
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
-  cpu                = 512
-  memory             = 2048
+  container_definitions    = data.template_file.default-container.rendered
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  cpu                      = 512
+  memory                   = 2048
 }
 
 
@@ -109,19 +77,15 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each = toset(compact(distinct(concat([
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
+  ], var.iam_role_additional_policies))))
 
-resource "aws_iam_role_policy_attachment" "ssm-role-policy-attachment" {
+  policy_arn = each.value
   role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "cloud-watch-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
 }
 
 

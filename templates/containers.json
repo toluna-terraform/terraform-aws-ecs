@@ -1,0 +1,57 @@
+[
+    {
+        "essential" : true,
+        "memory" : ${memory},
+        "name" : "${name}",
+        "cpu" : ${cpu},
+        "image" : "${image}",
+        "environment" : [
+        { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${aspnetcore_environment}" }
+        ],
+        "secrets" : [
+        {
+            "name" : "DB_HOST",
+            "valueFrom" : "${secret}"
+        }
+        ],
+        "portMappings" : [
+        {
+            "containerPort" : ${container_port},
+            "hostPort" : ${container_port}
+        }
+        ],
+        "logConfiguration" : {
+        "logDriver" : "awslogs",
+        "options" : {
+            "awslogs-group" : "${log_group}",
+            "awslogs-region" : "${region}",
+            "awslogs-stream-prefix" : "${awslogs-stream-prefix}"
+        }
+        }
+    %{ if create_datadog }
+    },
+    {
+        "name": "${dd_name}",
+        "image": "${dd_image}",
+        "memory": ${dd_memory},
+        "cpu": ${dd_cpu},
+        "environment" : ${dd_environment},
+        "portMappings" : [
+            {
+            "hostPort" : ${dd_container_port},
+            "protocol" : "tcp",
+            "containerPort" : ${dd_container_port}
+            }
+        ],
+        "secrets" : [
+        {
+            "name" : "DD_API_KEY",
+            "valueFrom" : "${dd_api_key}"
+        }
+            ]
+    }
+    %{ else }
+    }
+    %{ endif }
+
+]

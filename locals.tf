@@ -32,4 +32,5 @@ locals {
       prefix_list_ids = ["${data.aws_prefix_list.private_s3.id}"]
     }
   }
+
 }

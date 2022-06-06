@@ -9,3 +9,4 @@
 service/testresults/
 /**/environment.json
 terraform.tfstate*
+/tests
