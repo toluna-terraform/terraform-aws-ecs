@@ -114,10 +114,3 @@ variable "datadog_environment_variables" {
   type        = list(any)
   default     = null
 }
-
-variable "dd_api_key" {
-  description = "Datadog api key"
-  type        = string
-  default     = "null"
-
-}

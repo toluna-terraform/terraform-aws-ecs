@@ -88,6 +88,27 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.ecs_task_execution_role.name
 }
 
+resource "aws_iam_role_policy" "datadog_policy" {
+  name = "datadog-policy"
+  role = aws_iam_role.ecs_task_execution_role.id
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Action" : [
+          "ecs:ListClusters",
+          "ecs:ListContainerInstances",
+          "ecs:DescribeContainerInstances"
+        ],
+        "Effect" : "Allow",
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
+
 
 # // ECS security group
 resource "aws_security_group" "ecs_sg" {

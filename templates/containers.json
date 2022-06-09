@@ -5,6 +5,7 @@
         "name" : "${name}",
         "cpu" : ${cpu},
         "image" : "${image}",
+        "taskRoleArn" : "${default_container_task_role}",
         "environment" : [
         { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${aspnetcore_environment}" }
         ],
