@@ -48,6 +48,18 @@ variable "iam_role_additional_policies" {
   default     = []
 }
 
+variable "task_definition_cpu" {
+  description = "Task definition CPU"
+  type = number
+  default = 512
+}
+
+variable "task_definition_memory" {
+  description = "Task definition memory"
+  type = number
+  default = 2048
+}
+
 # Default container related variables
 variable "default_container_cpu" {
   description = "Default container cpu"

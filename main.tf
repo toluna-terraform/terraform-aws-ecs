@@ -49,8 +49,8 @@ resource "aws_ecs_task_definition" "task_definition" {
   network_mode             = "awsvpc"
   container_definitions    = data.template_file.default-container.rendered
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  cpu                      = 512
-  memory                   = 2048
+  cpu                      = var.task_definition_cpu
+  memory                   = var.task_definition_memory
 }
 
 
