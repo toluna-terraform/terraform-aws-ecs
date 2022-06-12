@@ -34,8 +34,8 @@ locals {
     }
   }
 
-  dockerLabels  = jsonencode(var.dockerLabels)
-  environment   = jsonencode(var.environment)
-  dd_environment= jsonencode(var.datadog_environment)
+  dockerLabels                    = jsonencode(var.dockerLabels)
+  default_container_environment   = jsonencode(var.default_container_environment)
+  dd_environment                  = jsonencode(var.datadog_container_environment)
 
 }

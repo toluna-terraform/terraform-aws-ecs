@@ -73,7 +73,7 @@ variable "aws_cloudwatch_log_group_name" {
   type        = string
 }
 
-variable "environment" {
+variable "default_container_environment" {
   description = "The environment variables to pass to a container"
   type        = list(map(string))
   default     = []
@@ -121,7 +121,7 @@ variable "datadog_container_image" {
   default     = "datadog/agent:latest"
 }
 
-variable "datadog_environment" {
+variable "datadog_container_environment" {
   description = "Datadog container environment variables"
   type        = list(map(string))
   default     = []

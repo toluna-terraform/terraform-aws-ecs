@@ -18,6 +18,6 @@ module "ecs" {
   subnet_ids                    = local.subnet_ids
   aws_alb_target_group_arn      = local.aws_alb_target_group_arn
   create_datadog                = true (default is false)
-  datadog_environment           = [{ "name" : "ECS_FARGATE", "value" : "true" },]
+  datadog_container_environment = [{ "name" : "ECS_FARGATE", "value" : "true" },]
 }
 ```
