@@ -125,3 +125,4 @@ variable "datadog_container_environment" {
   description = "Datadog container environment variables"
   type        = list(map(string))
   default     = []
+}
