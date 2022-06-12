@@ -73,6 +73,18 @@ variable "aws_cloudwatch_log_group_name" {
   type        = string
 }
 
+variable "environment" {
+  description = "The environment variables to pass to a container"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "dockerLabels" {
+  description = "A key/value map of labels to add to the container"
+  type        = map(string)
+  default     = {}
+}
+
 # Datadog container related variables
 variable "create_datadog" {
   description = "Boolean which initiate datadog container creation or not"
@@ -82,7 +94,7 @@ variable "create_datadog" {
 variable "datadog_container_cpu" {
   description = "Datadog container cpu"
   type        = number
-  default     = 1
+  default     = 10
 }
 
 variable "datadog_container_memory" {
@@ -109,8 +121,7 @@ variable "datadog_container_image" {
   default     = "datadog/agent:latest"
 }
 
-variable "datadog_environment_variables" {
+variable "datadog_environment" {
   description = "Datadog container environment variables"
-  type        = list(any)
-  default     = null
-}
+  type        = list(map(string))
+  default     = []

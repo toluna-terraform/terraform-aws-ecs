@@ -6,9 +6,8 @@
         "cpu" : ${cpu},
         "image" : "${image}",
         "taskRoleArn" : "${default_container_task_role}",
-        "environment" : [
-        { "name" : "ASPNETCORE_ENVIRONMENT", "value" : "${aspnetcore_environment}" }
-        ],
+        "dockerLabels": "${dockerLabels}",
+        "environment": ${environment},
         "secrets" : [
         {
             "name" : "DB_HOST",
@@ -32,6 +31,14 @@
     %{ if create_datadog }
     },
     {
+        "logConfiguration" : {
+            "logDriver" : "awslogs",
+            "options" : {
+                "awslogs-group" : "${log_group}",
+                "awslogs-region" : "${region}",
+                "awslogs-stream-prefix" : "${awslogs-stream-prefix}"
+            }
+        },
         "name": "${dd_name}",
         "image": "${dd_image}",
         "memory": ${dd_memory},

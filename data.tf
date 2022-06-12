@@ -24,10 +24,11 @@ data "template_file" "default-container" {
     cpu                         = var.default_container_cpu
     memory                      = var.default_container_memory
     container_port              = var.default_container_port
+    dockerLabels                = local.dockerLabels == "{}" ? "null" : local.dockerLabels
     default_container_task_role = aws_iam_role.ecs_task_execution_role.arn
     name                        = "${var.app_name}-${var.environment}"
     image                       = "${var.ecr_repo_url}:${split("-", var.environment)[0]}"
-    aspnetcore_environment      = "${split("-", var.environment)[0]}"
+    environment                 = local.environment == "[]" ? "null" : local.environment
     secret                      = "/infra/${var.app_name}-${var.environment}/db-host"
     awslogs-stream-prefix       = "awslogs-${var.app_name}-pref"
     create_datadog              = var.create_datadog
@@ -37,6 +38,6 @@ data "template_file" "default-container" {
     dd_name                     = var.datadog_container_name
     dd_image                    = var.datadog_container_image
     dd_api_key                  = "/${data.aws_caller_identity.current.account_id}/datadog/api-key"
-    dd_environment              = jsonencode(var.datadog_environment_variables)
+    dd_environment              = local.dd_environment == "[]" ? "null" : local.dd_environment
   }
 }

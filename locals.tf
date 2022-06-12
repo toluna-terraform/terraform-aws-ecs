@@ -1,4 +1,5 @@
 locals {
+  # ECS SG rules
   ecs_security_group_rules = {
     ingress_http = {
       from_port   = 80
@@ -32,5 +33,9 @@ locals {
       prefix_list_ids = ["${data.aws_prefix_list.private_s3.id}"]
     }
   }
+
+  dockerLabels  = jsonencode(var.dockerLabels)
+  environment   = jsonencode(var.environment)
+  dd_environment= jsonencode(var.datadog_environment)
 
 }
