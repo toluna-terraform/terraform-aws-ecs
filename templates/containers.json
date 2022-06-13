@@ -6,7 +6,7 @@
         "cpu" : ${cpu},
         "image" : "${image}",
         "taskRoleArn" : "${default_container_task_role}",
-        "dockerLabels": "${dockerLabels}",
+        "dockerLabels": ${dockerLabels},
         "environment": ${environment},
         "secrets" : [
         {
