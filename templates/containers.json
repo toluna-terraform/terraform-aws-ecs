@@ -41,7 +41,7 @@
         },
         "name": "${dd_name}",
         "image": "${dd_image}",
-        "memory": ${dd_memory},
+        "memoryReservation": ${dd_memory},
         "cpu": ${dd_cpu},
         "environment" : ${dd_environment},
         "portMappings" : [

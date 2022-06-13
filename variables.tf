@@ -50,14 +50,14 @@ variable "iam_role_additional_policies" {
 
 variable "task_definition_cpu" {
   description = "Task definition CPU"
-  type = number
-  default = 512
+  type        = number
+  default     = 2048
 }
 
 variable "task_definition_memory" {
   description = "Task definition memory"
-  type = number
-  default = 2048
+  type        = number
+  default     = 4096
 }
 
 # Default container related variables
@@ -70,7 +70,7 @@ variable "default_container_cpu" {
 variable "default_container_memory" {
   description = "Default container memory"
   type        = number
-  default     = 2048
+  default     = 4096
 }
 
 variable "default_container_port" {
@@ -109,7 +109,7 @@ variable "datadog_container_cpu" {
   default     = 10
 }
 
-variable "datadog_container_memory" {
+variable "datadog_container_memoryreservation" {
   description = "Datadog container memory"
   type        = number
   default     = 256
