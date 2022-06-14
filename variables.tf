@@ -61,31 +61,30 @@ variable "task_definition_memory" {
 }
 
 # Default container related variables
-variable "default_container_cpu" {
+variable "app_container_cpu" {
   description = "Default container cpu"
   type        = number
   default     = 2
 }
 
-variable "default_container_memory" {
+variable "app_container_memory" {
   description = "Default container memory"
   type        = number
   default     = 4096
 }
 
-variable "default_container_port" {
+variable "app_container_port" {
   description = "Default container port"
   type        = number
   default     = 80
 }
-
 
 variable "aws_cloudwatch_log_group_name" {
   description = "Cloud watch log group name"
   type        = string
 }
 
-variable "default_container_environment" {
+variable "app_container_environment" {
   description = "The environment variables to pass to a container"
   type        = list(map(string))
   default     = []
@@ -95,6 +94,12 @@ variable "dockerLabels" {
   description = "A key/value map of labels to add to the container"
   type        = map(string)
   default     = {}
+}
+
+variable "app_container_secrets" {
+  description = "The secrets to pass to the app container"
+  type        = list(map(string))
+  default     = []
 }
 
 # Datadog container related variables
@@ -135,6 +140,12 @@ variable "datadog_container_image" {
 
 variable "datadog_container_environment" {
   description = "Datadog container environment variables"
+  type        = list(map(string))
+  default     = []
+}
+
+variable "datadog_container_secrets" {
+  description = "The secrets to pass to the datadog container"
   type        = list(map(string))
   default     = []
 }

@@ -5,15 +5,10 @@
         "name" : "${name}",
         "cpu" : ${cpu},
         "image" : "${image}",
-        "taskRoleArn" : "${default_container_task_role}",
+        "taskRoleArn" : "${task_execution_role}",
         "dockerLabels": ${dockerLabels},
         "environment": ${environment},
-        "secrets" : [
-        {
-            "name" : "DB_HOST",
-            "valueFrom" : "${secret}"
-        }
-        ],
+        "secrets" : ${secrets},
         "portMappings" : [
         {
             "containerPort" : ${container_port},
@@ -51,12 +46,7 @@
             "containerPort" : ${dd_container_port}
             }
         ],
-        "secrets" : [
-        {
-            "name" : "DD_API_KEY",
-            "valueFrom" : "${dd_api_key}"
-        }
-            ]
+        "secrets" : ${dd_secrets}
     }
     %{ else }
     }

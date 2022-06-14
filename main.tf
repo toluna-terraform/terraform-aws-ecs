@@ -28,7 +28,7 @@ resource "aws_ecs_service" "main" {
     content {
       target_group_arn = var.aws_alb_target_group_arn
       container_name   = "${var.app_name}-${var.environment}"
-      container_port   = var.default_container_port
+      container_port   = var.app_container_port
     }
   }
 
