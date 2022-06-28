@@ -32,6 +32,11 @@ resource "aws_ecs_service" "main" {
     }
   }
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   # Ignoring changes made by code_deploy controller
   lifecycle {
     ignore_changes = [
