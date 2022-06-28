@@ -102,6 +102,11 @@ variable "app_container_secrets" {
   default     = []
 }
 
+variable "app_container_image" {
+  description = "App container image"
+  type        = string
+}
+
 # Datadog container related variables
 variable "create_datadog" {
   description = "Boolean which initiate datadog container creation or not"
