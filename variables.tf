@@ -9,6 +9,11 @@ variable "environment" {
   type        = string
 }
 
+variable "aws_profile" {
+  description = "profile"
+  type        = string
+}
+
 variable "ecs_service_desired_count" {
   description = "ecs service desired count"
   type        = number

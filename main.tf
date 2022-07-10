@@ -33,7 +33,7 @@ resource "aws_ecs_service" "main" {
   }
 
   deployment_circuit_breaker {
-    enable   = true
+    enable   = var.aws_alb_target_group_arn == null ? true : false
     rollback = true
   }
 

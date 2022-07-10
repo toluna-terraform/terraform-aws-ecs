@@ -14,6 +14,16 @@ data "aws_prefix_list" "private_s3" {
 # current account id
 data "aws_caller_identity" "current" {}
 
+#check if initial image exists
+data "external" "current_service_image" {
+  program = ["${path.module}/files/get_container_image.sh"]
+  query = {
+    app_name = "${var.app_name}"
+    image_name = "${var.app_container_image}"
+    aws_profile = "${var.aws_profile}"
+  }
+}
+
 # Container definitions
 data "template_file" "default-container" {
 
@@ -27,7 +37,7 @@ data "template_file" "default-container" {
     dockerLabels          = local.dockerLabels == "{}" ? "null" : local.dockerLabels
     task_execution_role   = aws_iam_role.ecs_task_execution_role.arn
     name                  = "${var.app_name}-${var.environment}"
-    image                 = var.app_container_image
+    image                 = data.external.current_service_image.result.image
     environment           = local.app_container_environment == "[]" ? "null" : local.app_container_environment
     secrets               = local.app_container_secrets == "[]" ? "null" : local.app_container_secrets
     awslogs-stream-prefix = "awslogs-${var.app_name}-pref"
