@@ -1,9 +1,10 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.app_name}-${var.environment}"
+  name = "${var.app_name}-${var.env_name}"
 }
 
 resource "aws_ecs_service" "main" {
-  name                = "${var.app_name}-${var.environment}"
+  name = "${var.app_name}-${var.env_name}"
+  name                = "${var.app_name}-${var.env_name}"
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.task_definition.arn
   launch_type         = "FARGATE"
@@ -27,7 +28,7 @@ resource "aws_ecs_service" "main" {
     for_each = var.aws_alb_target_group_arn == null ? [] : [true]
     content {
       target_group_arn = var.aws_alb_target_group_arn
-      container_name   = "${var.app_name}-${var.environment}"
+      container_name   = "${var.app_name}-${var.env_name}"
       container_port   = var.app_container_port
     }
   }
@@ -48,7 +49,7 @@ resource "aws_ecs_service" "main" {
 
 
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = "${var.app_name}-${var.environment}"
+  family                   = "${var.app_name}-${var.env_name}"
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -60,7 +61,7 @@ resource "aws_ecs_task_definition" "task_definition" {
 
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "role-ecs-${var.app_name}-${var.environment}"
+  name               = "role-ecs-${var.app_name}-${var.env_name}"
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -117,11 +118,11 @@ resource "aws_iam_role_policy" "datadog_policy" {
 
 # // ECS security group
 resource "aws_security_group" "ecs_sg" {
-  name   = "${var.environment}-${var.app_name}-ecs"
+  name   = "${var.env_name}-${var.app_name}-ecs"
   vpc_id = var.vpc_id
 
   tags = {
-    Name = "sg-${var.environment}-${var.app_name}-ecs"
+    Name = "sg-${var.env_name}-${var.app_name}-ecs"
   }
 }
 
