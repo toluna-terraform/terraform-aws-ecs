@@ -21,3 +21,4 @@ module "ecs" {
   datadog_container_environment = [{ "name" : "ECS_FARGATE", "value" : "true" },]
 }
 ```
+
