@@ -4,7 +4,6 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 
 resource "aws_ecs_service" "main" {
   name = "${var.app_name}-${var.env_name}"
-  name                = "${var.app_name}-${var.env_name}"
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.task_definition.arn
   launch_type         = "FARGATE"
