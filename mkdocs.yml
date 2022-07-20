@@ -1,6 +1,7 @@
-site_name: 'terraform-aws-ecs'
-site_description: 'Toluna Terraform AWS ECS Module'
-repo_url: https://github.com/toluna-terraform/terraform-aws-ecs
+site_name: 'Backstage'
+site_description: 'Main documentation for Backstage features and platform APIs'
+repo_url: https://github.com/backstage/backstage
+edit_uri: edit/master/docs
 
 plugins:
   - techdocs-core
