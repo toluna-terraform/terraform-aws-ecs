@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: terraform-aws-ecs
+  annotations:
+    github.com/project-slug: toluna-terraform/terraform-aws-ecs
+spec:
+  type: other
+  lifecycle: unknown
+  owner: toluna-terraform
