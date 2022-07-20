@@ -2,9 +2,11 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: terraform-aws-ecs
+  description: terraform ecs module backstage poc
   annotations:
     github.com/project-slug: toluna-terraform/terraform-aws-ecs
+    backstage.io/techdocs-ref: https://github.com/toluna-terraform/terraform-aws-ecs/blob/master/README.md
 spec:
   type: library
   lifecycle: experimental
-  owner: Platform
+  owner: Platform   
