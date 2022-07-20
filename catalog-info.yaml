@@ -5,6 +5,6 @@ metadata:
   annotations:
     github.com/project-slug: toluna-terraform/terraform-aws-ecs
 spec:
-  type: other
-  lifecycle: unknown
-  owner: toluna-terraform
+  type: library
+  lifecycle: experimental
+  owner: Platform
