@@ -3,9 +3,14 @@ kind: Component
 metadata:
   name: terraform-aws-ecs
   description: terraform ecs module backstage poc
+  links:
+    - title: Website
+      url: https://backstage-dev.toluna-internal.com/
+    - title: Documentation
+      url: https://backstage-dev.toluna-internal.com/docs
   annotations:
     github.com/project-slug: toluna-terraform/terraform-aws-ecs
-    backstage.io/techdocs-ref: url:https://github.com/toluna-terraform/terraform-aws-ecs/blob/master/mkdocs.yml
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: library
   lifecycle: experimental
