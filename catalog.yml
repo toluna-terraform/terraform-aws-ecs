@@ -5,7 +5,7 @@ metadata:
   description: terraform ecs module backstage poc
   annotations:
     github.com/project-slug: toluna-terraform/terraform-aws-ecs
-    backstage.io/techdocs-ref: dir.
+    backstage.io/techdocs-ref: https://github.com/toluna-terraform/terraform-aws-ecs/edit/master/mkdocs.yml
 spec:
   type: library
   lifecycle: experimental
