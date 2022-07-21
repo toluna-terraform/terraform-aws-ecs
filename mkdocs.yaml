@@ -1,7 +1,0 @@
-site_name: 'terraform-aws-ecs-module'
-
-nav:
-  - Home: index.md
-  
-plugins:
-  - techdocs-core
