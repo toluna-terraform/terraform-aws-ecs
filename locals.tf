@@ -39,5 +39,4 @@ locals {
   app_container_secrets         = jsonencode(var.app_container_secrets)
   datadog_container_secrets     = jsonencode(var.datadog_container_secrets)
   datadog_container_environment = jsonencode(var.datadog_container_environment)
-
 }
