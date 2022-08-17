@@ -36,7 +36,7 @@ data "template_file" "default-container" {
     container_port        = var.app_container_port
     dockerLabels          = local.dockerLabels == "{}" ? "null" : local.dockerLabels
     task_execution_role   = aws_iam_role.ecs_task_execution_role.arn
-    name                  = "${var.app_name}-${var.env_name}"
+    name                  = "${var.app_name}-${var.environment}"
     image                 = data.external.current_service_image.result.image
     environment           = local.app_container_environment == "[]" ? "null" : local.app_container_environment
     secrets               = local.app_container_secrets == "[]" ? "null" : local.app_container_secrets

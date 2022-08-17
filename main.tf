@@ -82,15 +82,20 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
-  for_each = toset(compact(distinct(concat([
-    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-    "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
-    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-  ], var.iam_role_additional_policies))))
 
+locals {
+  default_iam_role_policies = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", 
+                                "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+                                "arn:aws:iam::aws:policy/CloudWatchFullAccess"]
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  role     =  aws_iam_role.ecs_task_execution_role.name
+  for_each = setunion(concat(
+    local.default_iam_role_policies,
+    var.iam_role_additional_policies)
+  )
   policy_arn = each.value
-  role       = aws_iam_role.ecs_task_execution_role.name
 }
 
 resource "aws_iam_role_policy" "datadog_policy" {
