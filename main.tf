@@ -82,19 +82,16 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 
-
-locals {
-  default_iam_role_policies = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", 
-                                "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
-                                "arn:aws:iam::aws:policy/CloudWatchFullAccess"]
-}
-
 resource "aws_iam_role_policy_attachment" "this" {
   role     =  aws_iam_role.ecs_task_execution_role.name
-  for_each = setunion(concat(
-    local.default_iam_role_policies,
-    var.iam_role_additional_policies)
-  )
+  for_each = {for i, val in local.default_iam_role_policies: i => val}
+  policy_arn = each.value
+}
+
+resource "aws_iam_role_policy_attachment" "that" {
+  depends_on = [var.iam_role_additional_policies]
+  role     =  aws_iam_role.ecs_task_execution_role.name
+  for_each = {for i, val in var.iam_role_additional_policies: i => val}
   policy_arn = each.value
 }
 
@@ -117,8 +114,6 @@ resource "aws_iam_role_policy" "datadog_policy" {
     ]
   })
 }
-
-
 
 # // ECS security group
 resource "aws_security_group" "ecs_sg" {
@@ -147,5 +142,4 @@ resource "aws_security_group_rule" "ecs_sg" {
   prefix_list_ids          = try(each.value.prefix_list_ids, [])
   self                     = try(each.value.self, null)
   source_security_group_id = try(each.value.source_security_group_id, null)
-
 }
