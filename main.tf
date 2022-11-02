@@ -1,3 +1,7 @@
+locals {
+  env_name                 = split("-", var.environment)[0]
+  }
+
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.app_name}-${var.environment}"
 }
@@ -48,7 +52,7 @@ resource "aws_ecs_service" "main" {
 
 
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = "${var.app_name}-${var.environment}"
+  family                   = "${var.app_name}-${local.env_name}"
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
