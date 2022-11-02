@@ -31,7 +31,7 @@ resource "aws_ecs_service" "main" {
     for_each = var.aws_alb_target_group_arn == null ? [] : [true]
     content {
       target_group_arn = var.aws_alb_target_group_arn
-      container_name   = "${var.app_name}-${var.environment}"
+      container_name   = "${var.app_name}-${local.env_name}"
       container_port   = var.app_container_port
     }
   }
