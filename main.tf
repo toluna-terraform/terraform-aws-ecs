@@ -1,3 +1,7 @@
+locals {
+  env_name                 = split("-", var.environment)[0]
+  }
+
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.app_name}-${var.environment}"
 }
@@ -27,7 +31,7 @@ resource "aws_ecs_service" "main" {
     for_each = var.aws_alb_target_group_arn == null ? [] : [true]
     content {
       target_group_arn = var.aws_alb_target_group_arn
-      container_name   = "${var.app_name}-${var.environment}"
+      container_name   = "${var.app_name}-${local.env_name}"
       container_port   = var.app_container_port
     }
   }
@@ -48,7 +52,7 @@ resource "aws_ecs_service" "main" {
 
 
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = "${var.app_name}-${var.environment}"
+  family                   = "${var.app_name}-${local.env_name}"
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
