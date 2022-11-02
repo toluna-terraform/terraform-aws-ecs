@@ -47,8 +47,14 @@ variable "ecs_security_group_additional_rules" {
   default     = {}
 }
 
+# variable "iam_role_additional_policies" {
+#   description = "Additional policies to be added to the IAM role"
+#   type        = list(string)
+#   default     = []
+# }
+
 variable "iam_role_additional_policies" {
-  description = "Additional policies to be added to the IAM role"
+  description = "IAM Policy to be attached to role"
   type        = list(string)
   default     = []
 }

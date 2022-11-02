@@ -34,6 +34,10 @@ locals {
     }
   }
 
+  default_iam_role_policies = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy", 
+                               "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess",
+                               "arn:aws:iam::aws:policy/CloudWatchFullAccess"]
+
   dockerLabels                  = jsonencode(var.dockerLabels)
   app_container_environment     = jsonencode(var.app_container_environment)
   app_container_secrets         = jsonencode(var.app_container_secrets)
