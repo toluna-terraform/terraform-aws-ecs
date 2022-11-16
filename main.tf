@@ -6,6 +6,16 @@ resource "aws_ecs_cluster" "ecs_cluster" {
   name = "${var.app_name}-${var.environment}"
 }
 
+resource "aws_cloudwatch_log_group" "datadog_log_group" {
+  count = var.create_datadog ? 1 : 0
+  name = "${var.app_name}-${var.environment}-datadog-agent"
+
+  tags = {
+    Environment = var.environment
+    Application = var.app_name
+  }
+}
+
 resource "aws_ecs_service" "main" {
   name = "${var.app_name}-${var.environment}"
   cluster             = aws_ecs_cluster.ecs_cluster.id
