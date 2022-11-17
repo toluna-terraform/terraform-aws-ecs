@@ -29,7 +29,7 @@
         "logConfiguration" : {
             "logDriver" : "awslogs",
             "options" : {
-                "awslogs-group" : "${log_group}",
+                "awslogs-group" : "${name}-datadog-agent",
                 "awslogs-region" : "${region}",
                 "awslogs-stream-prefix" : "${awslogs-stream-prefix}"
             }
