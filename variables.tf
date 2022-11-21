@@ -112,6 +112,11 @@ variable "app_container_secrets" {
   type        = list(map(string))
   default     = []
 }
+variable "app_container_command" {
+  description = "The command to pass to the app container"
+  type        = list(string)
+  default     = []
+}
 
 variable "app_container_image" {
   description = "App container image"

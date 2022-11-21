@@ -40,6 +40,7 @@ data "template_file" "default-container" {
     image                 = data.external.current_service_image.result.image
     environment           = local.app_container_environment == "[]" ? "null" : local.app_container_environment
     secrets               = local.app_container_secrets == "[]" ? "null" : local.app_container_secrets
+    command               = local.app_container_command == "[]" ? "null" : local.app_container_command
     awslogs-stream-prefix = "awslogs-${var.app_name}-pref"
     create_datadog        = var.create_datadog
     dd_cpu                = var.datadog_container_cpu

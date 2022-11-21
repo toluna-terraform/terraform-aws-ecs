@@ -15,6 +15,7 @@
             "hostPort" : ${container_port}
         }
         ],
+        "command" : ${command},
         "logConfiguration" : {
         "logDriver" : "awslogs",
         "options" : {
