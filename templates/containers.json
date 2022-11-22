@@ -9,6 +9,7 @@
         "dockerLabels": ${dockerLabels},
         "environment": ${environment},
         "secrets" : ${secrets},
+        "ulimits" : ${ulimits},
         "portMappings" : [
         {
             "containerPort" : ${container_port},
