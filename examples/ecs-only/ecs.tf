@@ -44,7 +44,7 @@ module "ecs" {
   task_definition_cpu           = 512
   task_definition_memory        = 4096
   app_container_memory          = 4096
-  app_container_port            =9000
+  app_container_port            = 443
   ecs_security_group_additional_rules = {
     lb_access = {
       from_port   = 443
