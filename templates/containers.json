@@ -9,12 +9,14 @@
         "dockerLabels": ${dockerLabels},
         "environment": ${environment},
         "secrets" : ${secrets},
+        "ulimits" : ${ulimits},
         "portMappings" : [
         {
             "containerPort" : ${container_port},
             "hostPort" : ${container_port}
         }
         ],
+        "command" : ${command},
         "logConfiguration" : {
         "logDriver" : "awslogs",
         "options" : {
