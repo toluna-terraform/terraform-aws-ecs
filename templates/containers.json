@@ -33,7 +33,7 @@
             "options" : {
                 "awslogs-group" : "${name}-datadog-agent",
                 "awslogs-region" : "${region}",
-                "awslogs-stream-prefix" : "${awslogs-stream-prefix}"
+                "awslogs-stream-prefix" : "${name}-datadog-agent"
             }
         },
         "name": "${dd_name}",
