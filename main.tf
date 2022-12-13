@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 
 resource "aws_cloudwatch_log_group" "datadog_log_group" {
   count = var.create_datadog ? 1 : 0
-  name = "${var.app_name}-${var.environment}-datadog-agent"
+  name = "${var.aws_cloudwatch_log_group_name}-datadog-agent"
 
   tags = {
     Environment = var.environment
