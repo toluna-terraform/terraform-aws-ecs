@@ -31,9 +31,9 @@
         "logConfiguration" : {
             "logDriver" : "awslogs",
             "options" : {
-                "awslogs-group" : "${name}-datadog-agent",
+                "awslogs-group" : "${log_group}-datadog-agent",
                 "awslogs-region" : "${region}",
-                "awslogs-stream-prefix" : "${name}-datadog-agent"
+                "awslogs-stream-prefix" : "${log_group}-datadog-agent"
             }
         },
         "name": "${dd_name}",
