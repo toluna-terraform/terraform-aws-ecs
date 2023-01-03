@@ -42,6 +42,7 @@ data "template_file" "default-container" {
     secrets               = length(local.app_container_secrets) == 0 ? "null" : local.app_container_secrets
     ulimits               = length(local.app_container_ulimits) == 0 ? "null" : local.app_container_ulimits
     command               = length(local.app_container_command) == 0 ? "null" : local.app_container_command
+    entryPoint            = length(local.app_container_entry_point) == 0 ? "null" : local.app_container_entry_point
     awslogs-stream-prefix = "awslogs-${var.app_name}-pref"
     create_datadog        = var.create_datadog
     dd_cpu                = var.datadog_container_cpu
