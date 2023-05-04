@@ -36,6 +36,12 @@ variable "aws_alb_target_group_arn" {
   default     = null
 }
 
+variable "secondary_aws_alb_target_group_arn" {
+  description = "Secondary ALB target group arn"
+  type        = string
+  default     = null
+}
+
 variable "vpc_id" {
   description = "VPC id"
   type        = string
