@@ -161,7 +161,7 @@ variable "datadog_container_name" {
 variable "datadog_container_image" {
   description = "Datadog container image"
   type        = string
-  default     = "datadog/agent:latest"
+  default     = "public.ecr.aws/datadog/agent:latest"
 }
 
 variable "datadog_container_environment" {
