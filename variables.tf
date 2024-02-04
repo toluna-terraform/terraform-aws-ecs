@@ -179,16 +179,19 @@ variable "datadog_container_secrets" {
 variable "autoscaling_max_capacity" {
   description = "Auto-scaling maximmum capacity"
   type        = number
+  default     = null
 }
 
 variable "autoscaling_min_capacity" {
   description = "Auto-scaling minimmum capacity"
   type        = number
+  default     = null
 }
 
 variable "autoscaling_cpu_target_percentage" {
   description = "Auto-scaling AVG CPU Utilization target percentage"
   type        = number
+  default     = null
 }
 
 variable "is_auto_scaling_enabled" {
