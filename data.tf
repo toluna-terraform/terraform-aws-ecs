@@ -18,9 +18,9 @@ data "aws_caller_identity" "current" {}
 data "external" "current_service_image" {
   program = ["${path.module}/files/get_container_image.sh"]
   query = {
-    app_name = "${var.app_name}"
-    image_name = "${var.app_container_image}"
-    aws_profile = "${var.aws_profile}"
+    app_name = "${local.app_name}"
+    image_name = "${local.app_container_image}"
+    aws_profile = "${local.aws_profile}"
   }
 }
 
@@ -36,7 +36,7 @@ data "template_file" "default-container" {
     container_port        = var.app_container_port
     dockerLabels          = local.dockerLabels == "{}" ? "null" : local.dockerLabels
     task_execution_role   = aws_iam_role.ecs_task_execution_role.arn
-    name                  = "${var.app_name}-${local.env_name}"
+    name                  = "${local.app_name}-${local.env_name}"
     image                 = data.external.current_service_image.result.image
     environment           = local.app_container_environment == "[]" ? "null" : local.app_container_environment
     secrets               = local.app_container_secrets == "[]" ? "null" : local.app_container_secrets

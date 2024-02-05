@@ -1,44 +1,61 @@
 # General variables for module
+
+variable "ecs_config" {
+
+}
 variable "app_name" {
   description = "app name"
   type        = string
+  nullable = true
 }
 
 variable "environment" {
   description = "environment"
   type        = string
+  default  = null
+  nullable = true
 }
 
 variable "aws_profile" {
   description = "profile"
   type        = string
+  default  = null
+  nullable = true
 }
 
 variable "ecs_service_desired_count" {
   description = "ecs service desired count"
   type        = number
+  default  = null
+  nullable = true
 }
 
 variable "ecr_repo_url" {
   description = "ecr repo url"
   type        = string
+  default  = null
+  nullable = true
 }
 
 variable "subnet_ids" {
   description = "Subnet IDs used in Service"
   type        = list(string)
   default     = null
+  nullable = true
 }
 
 variable "aws_alb_target_group_arn" {
   description = "ALB target group arn"
   type        = string
   default     = null
+  nullable = true
 }
 
 variable "vpc_id" {
   description = "VPC id"
   type        = string
+  default  = null
+  nullable = true
 }
 
 variable "ecs_security_group_additional_rules" {
@@ -46,12 +63,6 @@ variable "ecs_security_group_additional_rules" {
   type        = any
   default     = {}
 }
-
-# variable "iam_role_additional_policies" {
-#   description = "Additional policies to be added to the IAM role"
-#   type        = list(string)
-#   default     = []
-# }
 
 variable "iam_role_additional_policies" {
   description = "IAM Policy to be attached to role"
@@ -126,6 +137,8 @@ variable "app_container_command" {
 variable "app_container_image" {
   description = "App container image"
   type        = string
+  default  = null
+  nullable = true
 }
 
 # Datadog container related variables

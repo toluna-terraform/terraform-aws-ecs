@@ -1,28 +1,39 @@
 locals {
-  env_name                 = split("-", var.environment)[0]
-  }
+  app_name               = var.app_name == null ? var.ecs_config.app_name : var.app_name
+  ecr_repo_url           = var.ecr_repo_url == null ? var.ecs_config.ecr_repo_url : var.ecr_repo_url
+  aws_profile            = var.aws_profile == null ? var.ecs_config.aws_profile : var.aws_profile
+  environment            = var.environment == null ? var.ecs_config.environment : var.environment
+  env_name               = var.environment == null ? var.ecs_config.env_name : split("-",local.environment)[0]
+  vpc_id                 = var.vpc_id == null ? var.ecs_config.vpc_id : var.vpc_id
+  subnet_ids             = var.subnet_ids == null ? var.ecs_config.subnet_ids : var.subnet_ids
+  app_container_image    = var.app_container_image == null ? var.ecs_config.app_container_image : var.app_container_image
+  task_definition_cpu    = var.task_definition_cpu != var.ecs_config.task_definition_cpu ? var.task_definition_cpu : var.ecs_config.task_definition_cpu
+  task_definition_memory = var.task_definition_memory != var.ecs_config.task_definition_memory ? var.task_definition_memory : var.ecs_config.task_definition_memory
+  app_container_memory   = var.app_container_memory != var.ecs_config.app_container_memory ? var.app_container_memory : var.ecs_config.app_container_memory
+  ecs_service_desired_count = var.ecs_service_desired_count == null ? var.ecs_config.ecs_service_desired_count : var.ecs_service_desired_count
+}
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.app_name}-${var.environment}"
+  name = "${local.app_name}-${local.environment}"
 }
 
 resource "aws_cloudwatch_log_group" "datadog_log_group" {
   count = var.create_datadog ? 1 : 0
-  name = "${var.aws_cloudwatch_log_group_name}-datadog-agent"
+  name  = "${var.aws_cloudwatch_log_group_name}-datadog-agent"
 
   tags = {
-    Environment = var.environment
-    Application = var.app_name
+    Environment = local.environment
+    Application = local.app_name
   }
 }
 
 resource "aws_ecs_service" "main" {
-  name = "${var.app_name}-${var.environment}"
+  name                = "${local.app_name}-${local.environment}"
   cluster             = aws_ecs_cluster.ecs_cluster.id
   task_definition     = aws_ecs_task_definition.task_definition.arn
   launch_type         = "FARGATE"
   scheduling_strategy = "REPLICA"
-  desired_count       = var.ecs_service_desired_count
+  desired_count       = local.ecs_service_desired_count
 
   dynamic "deployment_controller" {
     for_each = var.aws_alb_target_group_arn == null ? [] : [true]
@@ -33,7 +44,7 @@ resource "aws_ecs_service" "main" {
 
   network_configuration {
     security_groups  = [aws_security_group.ecs_sg.id]
-    subnets          = var.subnet_ids
+    subnets          = local.subnet_ids
     assign_public_ip = false
   }
 
@@ -41,7 +52,7 @@ resource "aws_ecs_service" "main" {
     for_each = var.aws_alb_target_group_arn == null ? [] : [true]
     content {
       target_group_arn = var.aws_alb_target_group_arn
-      container_name   = "${var.app_name}-${local.env_name}"
+      container_name   = "${local.app_name}-${local.env_name}"
       container_port   = var.app_container_port
     }
   }
@@ -62,19 +73,19 @@ resource "aws_ecs_service" "main" {
 
 
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = "${var.app_name}-${local.env_name}"
+  family                   = "${local.app_name}-${local.env_name}"
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   container_definitions    = data.template_file.default-container.rendered
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  cpu                      = var.task_definition_cpu
-  memory                   = var.task_definition_memory
+  cpu                      = local.task_definition_cpu
+  memory                   = local.task_definition_memory
 }
 
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "role-ecs-${var.app_name}-${var.environment}"
+  name               = "role-ecs-${local.app_name}-${local.environment}"
   assume_role_policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -97,15 +108,15 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "this" {
-  role     =  aws_iam_role.ecs_task_execution_role.name
-  for_each = {for i, val in local.default_iam_role_policies: i => val}
+  role       = aws_iam_role.ecs_task_execution_role.name
+  for_each   = { for i, val in local.default_iam_role_policies : i => val }
   policy_arn = each.value
 }
 
 resource "aws_iam_role_policy_attachment" "that" {
   depends_on = [var.iam_role_additional_policies]
-  role     =  aws_iam_role.ecs_task_execution_role.name
-  for_each = {for i, val in var.iam_role_additional_policies: i => val}
+  role       = aws_iam_role.ecs_task_execution_role.name
+  for_each   = { for i, val in var.iam_role_additional_policies : i => val }
   policy_arn = each.value
 }
 
@@ -131,11 +142,11 @@ resource "aws_iam_role_policy" "datadog_policy" {
 
 # // ECS security group
 resource "aws_security_group" "ecs_sg" {
-  name   = "${var.environment}-${var.app_name}-ecs"
-  vpc_id = var.vpc_id
+  name   = "${local.environment}-${local.app_name}-ecs"
+  vpc_id = local.vpc_id
 
   tags = {
-    Name = "sg-${var.environment}-${var.app_name}-ecs"
+    Name = "sg-${local.environment}-${local.app_name}-ecs"
   }
 }
 
