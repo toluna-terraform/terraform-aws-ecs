@@ -6,56 +6,48 @@ variable "ecs_config" {
 variable "app_name" {
   description = "app name"
   type        = string
-  nullable = true
 }
 
 variable "environment" {
   description = "environment"
   type        = string
-  default  = null
-  nullable = true
+  default     = null
 }
 
 variable "aws_profile" {
   description = "profile"
   type        = string
-  default  = null
-  nullable = true
+  default     = null
 }
 
 variable "ecs_service_desired_count" {
   description = "ecs service desired count"
   type        = number
-  default  = null
-  nullable = true
+  default     = null
 }
 
 variable "ecr_repo_url" {
   description = "ecr repo url"
   type        = string
-  default  = null
-  nullable = true
+  default     = null
 }
 
 variable "subnet_ids" {
   description = "Subnet IDs used in Service"
   type        = list(string)
   default     = null
-  nullable = true
 }
 
 variable "aws_alb_target_group_arn" {
   description = "ALB target group arn"
   type        = string
   default     = null
-  nullable = true
 }
 
 variable "vpc_id" {
   description = "VPC id"
   type        = string
-  default  = null
-  nullable = true
+  default     = null
 }
 
 variable "ecs_security_group_additional_rules" {
@@ -125,7 +117,7 @@ variable "app_container_secrets" {
 }
 variable "app_container_ulimits" {
   description = "The ulimits to pass to the app container"
-  type        = list
+  type        = list(any)
   default     = []
 }
 variable "app_container_command" {
@@ -137,8 +129,7 @@ variable "app_container_command" {
 variable "app_container_image" {
   description = "App container image"
   type        = string
-  default  = null
-  nullable = true
+  default     = null
 }
 
 # Datadog container related variables
