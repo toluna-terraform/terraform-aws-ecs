@@ -121,8 +121,14 @@ variable "app_container_command" {
   description = "The command to pass to the app container"
   type        = list(string)
   default     = []
+  nullable    = true
 }
-
+variable "app_container_entry_point" {
+  description = "The entrypoint to pass to the app container"
+  type        = list(string)
+  default     = []
+  nullable    = true
+}
 variable "app_container_image" {
   description = "App container image"
   type        = string
