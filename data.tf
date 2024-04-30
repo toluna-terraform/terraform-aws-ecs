@@ -31,7 +31,7 @@ data "template_file" "default-container" {
   vars = {
     region                = data.aws_region.current.name
     log_group             = var.aws_cloudwatch_log_group_name
-    cpu                   = var.app_container_cpu
+    cpu                   = var.task_definition_cpu - var.datadog_container_cpu
     memory                = var.app_container_memory
     container_port        = var.app_container_port
     dockerLabels          = local.dockerLabels == "{}" ? "null" : local.dockerLabels
