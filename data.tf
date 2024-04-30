@@ -32,7 +32,7 @@ data "template_file" "default-container" {
     region                = data.aws_region.current.name
     log_group             = var.aws_cloudwatch_log_group_name
     cpu                   = var.task_definition_cpu - var.datadog_container_cpu
-    memory                = var.app_container_memory - var.datadog_container_memoryreservation
+    memory                = var.app_container_memory
     container_port        = var.app_container_port
     dockerLabels          = local.dockerLabels == "{}" ? "null" : local.dockerLabels
     task_execution_role   = aws_iam_role.ecs_task_execution_role.arn
