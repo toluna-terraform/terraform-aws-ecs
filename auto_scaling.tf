@@ -1,6 +1,6 @@
 resource "aws_appautoscaling_target" "appautoscaling_target" {
   # if auto-scaling is enabled, than create the resource
-  count = var.is_auto_scaling_enabled ? 1 : 0
+  count              = var.is_auto_scaling_enabled ? 1 : 0
 
   max_capacity       = var.autoscaling_max_capacity
   min_capacity       = var.autoscaling_min_capacity
@@ -11,7 +11,7 @@ resource "aws_appautoscaling_target" "appautoscaling_target" {
 
 resource "aws_appautoscaling_policy" "ecs_auto_scaling" {
   # if auto-scaling is enabled, than create the resource
-  count = var.is_auto_scaling_enabled ? 1 : 0
+  count              = var.is_auto_scaling_enabled ? 1 : 0
 
   name               = "${var.app_name}-${var.environment}_auto_scaling_policy"
   policy_type        = "TargetTrackingScaling"
