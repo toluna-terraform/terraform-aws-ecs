@@ -62,7 +62,7 @@ variable "iam_role_additional_policies" {
 variable "task_definition_cpu" {
   description = "Task definition CPU"
   type        = number
-  default     = 2048
+  default     = 1024
 }
 
 variable "task_definition_memory" {
@@ -75,7 +75,7 @@ variable "task_definition_memory" {
 variable "app_container_cpu" {
   description = "Default container cpu"
   type        = number
-  default     = 2
+  default     = 512
 }
 
 variable "app_container_memory" {
@@ -198,4 +198,16 @@ variable "is_auto_scaling_enabled" {
   description = "A boolean flag to enable/disable auto-scaling features"
   type        = bool
   default     = false
+}
+
+variable "scale_in_cooldown" {
+  description = "Amount of time, in seconds, after a scale in activity completes before another scale in activity can start."
+  type = number
+  default = 15
+}
+
+variable "scale_out_cooldown" {
+  description = "Amount of time, in seconds, after a scale out activity completes before another scale out activity can start."
+  type = number
+  default = 300
 }
