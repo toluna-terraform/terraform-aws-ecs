@@ -24,7 +24,7 @@ resource "aws_appautoscaling_policy" "ecs_auto_scaling" {
     scale_in_cooldown  = var.scale_in_cooldown
     scale_out_cooldown = var.scale_out_cooldown
     predefined_metric_specification {
-      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+      predefined_metric_type = var.predefined_metric_type
     }
   }
 }

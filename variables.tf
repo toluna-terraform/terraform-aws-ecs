@@ -194,6 +194,12 @@ variable "autoscaling_cpu_target_percentage" {
   default     = null
 }
 
+variable "predefined_metric_type" {
+  description = "ECSServiceAverageCPUUtilization, ECSServiceAverageMemoryUtilization, ALBRequestCountPerTarget"
+  type        = string
+  default     = "ECSServiceAverageCPUUtilization"
+}
+
 variable "is_auto_scaling_enabled" {
   description = "A boolean flag to enable/disable auto-scaling features"
   type        = bool
@@ -202,12 +208,12 @@ variable "is_auto_scaling_enabled" {
 
 variable "scale_in_cooldown" {
   description = "Amount of time, in seconds, after a scale in activity completes before another scale in activity can start."
-  type = number
-  default = 15
+  type        = number
+  default     = 15
 }
 
 variable "scale_out_cooldown" {
   description = "Amount of time, in seconds, after a scale out activity completes before another scale out activity can start."
-  type = number
-  default = 300
+  type        = number
+  default     = 300
 }
