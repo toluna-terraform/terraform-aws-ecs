@@ -38,10 +38,11 @@ data "template_file" "default-container" {
     task_execution_role   = aws_iam_role.ecs_task_execution_role.arn
     name                  = "${var.app_name}-${local.env_name}"
     image                 = data.external.current_service_image.result.image
-    environment           = local.app_container_environment == "[]" ? "null" : local.app_container_environment
-    secrets               = local.app_container_secrets == "[]" ? "null" : local.app_container_secrets
-    ulimits               = local.app_container_ulimits == "[]" ? "null" : local.app_container_ulimits
-    command               = local.app_container_command == "[]" ? "null" : local.app_container_command
+    environment           = length(local.app_container_environment) == 0 ? "null" : local.app_container_environment
+    secrets               = length(local.app_container_secrets) == 0 ? "null" : local.app_container_secrets
+    ulimits               = length(local.app_container_ulimits) == 0 ? "null" : local.app_container_ulimits
+    command               = length(local.app_container_command) == 0 ? "null" : local.app_container_command
+    entryPoint            = length(local.app_container_entry_point) == 0 ? "null" : local.app_container_entry_point
     awslogs-stream-prefix = "awslogs-${var.app_name}-pref"
     create_datadog        = var.create_datadog
     dd_cpu                = var.datadog_container_cpu
@@ -50,7 +51,7 @@ data "template_file" "default-container" {
     dd_name               = var.datadog_container_name
     dd_image              = var.datadog_container_image
     dd_api_key            = "/${data.aws_caller_identity.current.account_id}/datadog/api-key"
-    dd_environment        = local.datadog_container_environment == "[]" ? "null" : local.datadog_container_environment
-    dd_secrets            = local.datadog_container_secrets == "[]" ? "null" : local.datadog_container_secrets
+    dd_environment        = length(local.datadog_container_environment) == 0 ? "null" : local.datadog_container_environment
+    dd_secrets            = length(local.datadog_container_secrets) == 0 ? "null" : local.datadog_container_secrets
   }
 }
